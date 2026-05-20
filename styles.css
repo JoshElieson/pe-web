@@ -261,6 +261,12 @@ button {
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+  .logo {
+    display: none;
+  }
+}
+
 @media (max-width: 520px) {
   .header-nav {
     gap: 0.75rem;
