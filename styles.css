@@ -732,6 +732,23 @@ button {
   box-shadow: 0 0 24px rgba(155, 109, 255, 0.2);
 }
 
+.download-card__soon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+
 .download-note {
   margin-top: 2rem;
   text-align: center;
