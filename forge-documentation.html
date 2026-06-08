@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORGE — Full Documentation</title>
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --surface: #111827;
+      --panel: #1a2234;
+      --border: #2a3548;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #818cf8;
+      --accent-dim: #6366f1;
+      --success: #34d399;
+      --warn: #fbbf24;
+      --radius: 10px;
+      --max-width: 860px;
+      --sidebar-width: 240px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 1.5rem;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar TOC */
+    .toc {
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      height: 100vh;
+      overflow-y: auto;
+      padding: 1.5rem 1rem 2rem;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 12.5px;
+    }
+
+    .toc-brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .toc-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .toc-group {
+      margin-bottom: 1rem;
+    }
+
+    .toc-group-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .toc a {
+      display: block;
+      padding: 0.2rem 0;
+      color: var(--muted);
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .toc a:hover { color: var(--text); }
+
+    /* Main content */
+    .content {
+      flex: 1;
+      padding: 2.5rem 3rem 4rem;
+      max-width: calc(var(--max-width) + var(--sidebar-width) + 6rem);
+    }
+
+    .hero {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5rem;
+    }
+
+    .hero .tagline {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin: 0 0 1rem;
+      max-width: 38rem;
+    }
+
+    .hero .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    section {
+      margin-bottom: 2.75rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.75rem;
+      padding-top: 0.5rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--text);
+    }
+
+    p { margin: 0 0 0.85rem; }
+
+    ul, ol {
+      margin: 0 0 0.85rem;
+      padding-left: 1.35rem;
+    }
+
+    li { margin-bottom: 0.35rem; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+    }
+
+    .card h4 {
+      font-size: 13px;
+      font-weight: 600;
+      margin: 0 0 0.35rem;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .callout {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      font-size: 13.5px;
+      margin: 1rem 0;
+    }
+
+    .callout-warn {
+      background: rgba(251, 191, 36, 0.07);
+      border-color: rgba(251, 191, 36, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin: 0.75rem 0 1rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+    }
+
+    td:first-child {
+      font-weight: 500;
+      white-space: nowrap;
+      width: 1%;
+    }
+
+    kbd {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+
+    code {
+      font-family: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+      font-size: 12.5px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1rem 0.35rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(52, 211, 153, 0.12);
+      color: var(--success);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      vertical-align: middle;
+      margin-left: 0.35rem;
+    }
+
+    .badge-soon {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--muted);
+      border-color: var(--border);
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      .toc {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .content { padding: 1.5rem 1.25rem 3rem; }
+    }
+
+    @media print {
+      .toc { display: none; }
+      .content { max-width: 100%; padding: 1rem; }
+      body { background: #fff; color: #111; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="toc" aria-label="Table of contents">
+      <div class="toc-brand">FORGE</div>
+      <div class="toc-sub">Full product documentation</div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Overview</div>
+        <a href="#overview">What is FORGE?</a>
+        <a href="#getting-started">Getting started</a>
+        <a href="#interface">Interface layout</a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Core workflow</div>
+        <a href="#projects">Projects &amp; workspaces</a>
+        <a href="#agents">Agents &amp; chat</a>
+        <a href="#models">Model Cart &amp; Round Table</a>
+        <a href="#prompting">Prompting tools</a>
+        <a href="#file-context">File context &amp; permissions</a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Workspace tools</div>
+        <a href="#terminal-browser">Terminal &amp; browser</a>
+        <a href="#git">Source control (Git)</a>
+        <a href="#layouts">Layouts &amp; appearance</a>
+        <a href="#navigation">Navigation &amp; menus</a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Configuration</div>
+        <a href="#settings">Settings</a>
+        <a href="#automations">Automations</a>
+        <a href="#notifications">Notifications</a>
+        <a href="#account">Account &amp; auth</a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Reference</div>
+        <a href="#keyboard-shortcuts">Keyboard shortcuts</a>
+        <a href="#supported-models">Supported AI models</a>
+        <a href="#coming-soon">Coming soon</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <header class="hero">
+        <h1>FORGE Documentation</h1>
+        <p class="tagline">
+          A desktop AI engineering IDE for multi-model conversations, project-aware agents,
+          and agent-style workflows in one focused workspace.
+        </p>
+        <p class="meta">Version 1.0.0 · Desktop app (Tauri) · React + Rust</p>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <h2>What is FORGE?</h2>
+        <p>
+          FORGE is a cross-platform desktop application built for developers who want more control
+          over AI-assisted coding. Unlike a general-purpose chatbot, FORGE is structured around
+          engineering tasks: persistent project context, multi-model prompting, file-aware agents,
+          integrated terminal and browser panels, Git workflows, and configurable automations.
+        </p>
+        <div class="feature-grid">
+          <div class="card">
+            <h4>Multi-model AI</h4>
+            <p>Run one model or orchestrate several in a Round Table that synthesizes a combined answer.</p>
+          </div>
+          <div class="card">
+            <h4>Project-first</h4>
+            <p>Organize work into projects with folder context, permissions, and multiple agents per project.</p>
+          </div>
+          <div class="card">
+            <h4>Native desktop</h4>
+            <p>Built with Tauri for local file access, system notifications, embedded terminal, and OS integration.</p>
+          </div>
+          <div class="card">
+            <h4>Agent workflows</h4>
+            <p>Configure per-agent prompts, permissions, and automations that react to schedules and project events.</p>
+          </div>
+        </div>
+        <p>
+          AI requests are routed through a managed backend that proxies to providers (OpenAI, Anthropic,
+          Google, DeepSeek, xAI). Beta users install the desktop app without supplying their own API keys.
+        </p>
+      </section>
+
+      <!-- GETTING STARTED -->
+      <section id="getting-started">
+        <h2>Getting started</h2>
+        <ol>
+          <li>
+            <strong>Download and install</strong> the desktop app from the
+            <a href="https://pe-web-ebon.vercel.app/" target="_blank" rel="noopener">FORGE website</a>.
+            Windows installers (<code>.msi</code> / <code>.exe</code>) are supported.
+          </li>
+          <li>
+            <strong>Sign in</strong> via GitHub or Google from the account menu in the activity bar
+            (bottom-left). Authentication enables account features, XP progression, and GitHub integration
+            for repository operations.
+          </li>
+          <li>
+            <strong>Create a project</strong> from the Projects sidebar or <kbd>Ctrl+N</kbd> for a new agent.
+            Link a local folder to give agents file context.
+          </li>
+          <li>
+            <strong>Configure your Model Cart</strong> in the Agent Cart sidebar — select which AI models
+            participate in your Round Table.
+          </li>
+          <li>
+            <strong>Start chatting</strong> in the main workspace. Use <kbd>@</kbd> to target specific
+            models and attach files or folders for context.
+          </li>
+        </ol>
+      </section>
+
+      <!-- INTERFACE -->
+      <section id="interface">
+        <h2>Interface layout</h2>
+        <p>FORGE uses an IDE-style layout similar to VS Code, optimized for AI engineering workflows.</p>
+
+        <h3>Title bar</h3>
+        <p>
+          Custom window chrome with the FORGE wordmark, application menu bar (File, Edit, View, Go),
+          and native minimize/maximize/close controls on Windows. The title bar is draggable to move
+          the window.
+        </p>
+
+        <h3>Activity bar (left rail)</h3>
+        <p>Icon strip for switching primary sidebar views:</p>
+        <ul>
+          <li><strong>Model Cart</strong> — browse and select AI models for your Round Table.</li>
+          <li><strong>Projects</strong> — project list, chat history, and file tree.</li>
+          <li><strong>Source Control</strong> — Git status, staging, commits, and sync. Shows a badge with pending change count.</li>
+          <li><strong>Settings</strong> — opens the full settings page.</li>
+          <li><strong>Account menu</strong> — sign in, XP bar, and logout.</li>
+        </ul>
+
+        <h3>Left sidebar</h3>
+        <p>
+          Context panel that changes based on the active activity bar icon. Shows the project tree,
+          chat/project list, Git panel, or Model Cart. Collapsible via <kbd>Ctrl+B</kbd> or
+          View → Toggle Left Sidebar.
+        </p>
+
+        <h3>Main workspace</h3>
+        <p>
+          The central area holds agent tabs, chat messages, the composer, and optional split panes.
+          A toolbar provides quick access to Terminal, Browser, and layout controls. The bottom or
+          side panel hosts integrated terminal and browser tabs.
+        </p>
+
+        <h3>Status bar</h3>
+        <p>
+          Footer strip showing composer hints (<kbd>/</kbd> for commands, <kbd>@</kbd> for context),
+          GitHub auth status, and system health indicator.
+        </p>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <h2>Projects &amp; workspaces</h2>
+        <p>
+          A <strong>project</strong> (also called a workspace) is a container for one or more agents,
+          linked folders, and chat history. Projects persist locally and appear in the Projects sidebar.
+        </p>
+
+        <h3>Creating and managing projects</h3>
+        <ul>
+          <li><strong>New Project</strong> — File → New Project, or use the + button in the Projects panel.</li>
+          <li><strong>Rename</strong> — right-click a project or use inline rename when creating.</li>
+          <li><strong>Pin</strong> — pin important projects so they stay at the top of the list.</li>
+          <li><strong>Delete</strong> — remove projects you no longer need via the context menu.</li>
+          <li><strong>Folder linking</strong> — add local directories to a project so agents can read and write files within permitted paths.</li>
+        </ul>
+
+        <h3>Project tree</h3>
+        <p>
+          When a folder is linked, the Projects panel shows a file tree. Each node has an access
+          checkbox that grants the AI full context, read, and write access to that path and its
+          children. Hover a folder or file to reveal the checkbox. Disabled paths are excluded from
+          agent context.
+        </p>
+
+        <h3>Project settings</h3>
+        <p>Per-project configuration (in Agent/Chat Settings):</p>
+        <ul>
+          <li><strong>Project name</strong> — display name shown in sidebars and navigation.</li>
+          <li><strong>Project description</strong> — free-text context injected into agent prompts so models understand the project's purpose.</li>
+          <li><strong>Project tools</strong> — tag external tools or services the project uses (e.g. Vercel, Supabase). Enter names and press Enter to add.</li>
+          <li><strong>File context folders</strong> — explicitly add folders beyond the project tree for AI context.</li>
+        </ul>
+
+        <h3>Chat history panel</h3>
+        <p>
+          Lists all saved projects/workspaces. Selecting one opens it in the main workspace. Shows
+          linked context folder labels beneath each entry. Supports search, rename, pin, and delete.
+        </p>
+      </section>
+
+      <!-- AGENTS -->
+      <section id="agents">
+        <h2>Agents &amp; chat</h2>
+        <p>
+          Each project can have multiple <strong>agents</strong> — independent chat threads with their
+          own name, system prompt, and permission set. Agents appear as tabs in the workspace and can
+          be split into side-by-side panes.
+        </p>
+
+        <h3>Creating agents</h3>
+        <ul>
+          <li><strong>New Agent</strong> — File → New Agent (<kbd>Ctrl+N</kbd>) or the + tab button.</li>
+          <li><strong>Split layout</strong> — drag agent tabs to create horizontal or vertical splits, each running an independent agent.</li>
+          <li><strong>Close agents</strong> — click × on a tab. If the agent is still generating, you'll be prompted to confirm stopping the response.</li>
+        </ul>
+
+        <h3>Agent settings</h3>
+        <p>Open via the gear icon on the chat utility bar or File → Agent Settings:</p>
+        <ul>
+          <li><strong>Agent name</strong> — custom display name (defaults to "Agent 1", "Agent 2", etc.).</li>
+          <li><strong>System prompt</strong> — instructions that define the agent's role and behavior for every conversation turn.</li>
+          <li><strong>Permissions</strong> — granular toggles for Terminal, File read, File write, Browser, In-app settings, and Git commands. Use "Allow all" for full capability.</li>
+        </ul>
+
+        <h3>Chat composer</h3>
+        <p>The message input at the bottom of each agent pane supports:</p>
+        <ul>
+          <li>Multi-line input with Enter to send (Shift+Enter for newline).</li>
+          <li><strong>Attachments</strong> — attach files via picker or drag-and-drop from the OS or project tree.</li>
+          <li><strong>Prompt optimization</strong> — AI-powered rewrite that improves clarity while preserving meaning (uses GPT-4o). Includes undo.</li>
+          <li><strong>Stop generation</strong> — cancel an in-progress response.</li>
+          <li>Drag project files into the composer to reference them in your message.</li>
+        </ul>
+
+        <h3>Message behavior</h3>
+        <p>Configure per-project in Agent Settings:</p>
+        <ul>
+          <li><strong>Auto-scroll</strong> — automatically scroll to new messages as they arrive.</li>
+          <li><strong>Queued message behavior</strong> — choose what happens when you send while the agent is busy:
+            <ul>
+              <li><em>Wait to send</em> — queue until the current reply finishes.</li>
+              <li><em>Stop and send</em> — cancel the current reply and send immediately.</li>
+              <li><em>Prevent early sending</em> — disable the send button while the agent is working.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Messages &amp; activity</h3>
+        <ul>
+          <li>Messages render with syntax-highlighted code blocks and model attribution.</li>
+          <li><strong>Round Table discussion</strong> — when multiple models are active, a live indicator shows which model is "speaking" and when answers are being synthesized.</li>
+          <li><strong>Forge activity</strong> — file read/write actions performed by agents appear as structured activity chips in messages.</li>
+          <li><strong>Undo/redo</strong> — revert composer and workspace changes with Edit → Undo/Redo or <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd>.</li>
+          <li><strong>Find in chat</strong> — search within the current conversation (<kbd>Ctrl+F</kbd>).</li>
+          <li><strong>Navigate messages</strong> — jump to previous/next message with <kbd>Ctrl+↑</kbd> / <kbd>Ctrl+↓</kbd>.</li>
+        </ul>
+
+        <h3>Global agent management</h3>
+        <p>
+          Settings → Agents lists all active agents across projects with search. Click any agent
+          to open its full settings dialog without navigating to the project first.
+        </p>
+      </section>
+
+      <!-- MODELS -->
+      <section id="models">
+        <h2>Model Cart &amp; Round Table</h2>
+        <p>
+          FORGE's multi-model system lets you curate a personal lineup of AI models and choose
+          how they participate in each conversation.
+        </p>
+
+        <h3>Model Cart</h3>
+        <p>
+          Open the Agent Cart sidebar to browse models grouped by provider (ChatGPT, Claude, Gemini,
+          DeepSeek, Grok). Search filters by name, provider, or role. Toggle models on/off to add
+          or remove them from your Round Table. Click a provider row to expand its model list.
+        </p>
+
+        <h3>Round Table</h3>
+        <p>
+          When multiple models are active, FORGE runs a Round Table: each model contributes in turn,
+          then a synthesis step combines their outputs into one unified response. The discussion
+          indicator shows progress through participating models.
+        </p>
+        <ul>
+          <li><strong>Model dock</strong> — vertical strip beside the chat showing active models. Click to toggle a model on/off for the current message.</li>
+          <li><strong>Reorder</strong> — drag models in the dock to change Round Table speaking order.</li>
+          <li><strong>Weights</strong> — each model has a weight that influences synthesis priority. Weights persist across sessions.</li>
+        </ul>
+
+        <h3>Auto vs. manual mode</h3>
+        <ul>
+          <li><strong>Auto mode</strong> — FORGE analyzes your prompt and automatically selects the best model(s) from your cart based on task type (code, reasoning, research, creative, fast, etc.). Click any model in the dock to switch to manual mode.</li>
+          <li><strong>Manual mode</strong> — you choose exactly which models respond. Toggle individual models or use keyboard shortcuts.</li>
+        </ul>
+
+        <h3>Model keyboard shortcuts</h3>
+        <table>
+          <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Ctrl+1</kbd></td><td>Activate cart model in slot 1</td></tr>
+            <tr><td><kbd>Ctrl+2</kbd></td><td>Activate cart model in slot 2</td></tr>
+            <tr><td><kbd>Ctrl+3</kbd></td><td>Activate cart model in slot 3</td></tr>
+            <tr><td><kbd>Ctrl+4</kbd></td><td>Activate all cart models</td></tr>
+          </tbody>
+        </table>
+        <p>Default cart on first launch: GPT-4o, Claude 3.5 Sonnet, and Gemini 2.5 Flash.</p>
+      </section>
+
+      <!-- PROMPTING -->
+      <section id="prompting">
+        <h2>Prompting tools</h2>
+
+        <h3>@ Mentions</h3>
+        <p>
+          Type <kbd>@</kbd> in the composer to mention a model from your cart. Mentions route the
+          message to specific models regardless of auto/manual mode. Autocomplete appears as you type,
+          matching by model ID or display name. Completed mentions are highlighted in the composer.
+        </p>
+
+        <h3>/ Slash commands</h3>
+        <p>
+          Type <kbd>/</kbd> to open slash command autocomplete. Available commands include agent
+          slot shortcuts (<code>/a1</code>, <code>/agent1</code>, etc.), model shortcuts
+          (<code>/GPT-4o</code>), and edit commands (<code>/undo</code>, <code>/redo</code>).
+        </p>
+
+        <h3>Prompt optimization</h3>
+        <p>
+          Click the optimize button in the composer to have GPT-4o rewrite your draft prompt for
+          clarity and structure without changing intent. An undo button restores your original text.
+        </p>
+
+        <h3>Attachments</h3>
+        <p>
+          Attach files via the attachment button or by dragging files into the composer. Supports
+          native OS file picker, drag-and-drop from the desktop, and drag from the project tree.
+          Duplicate filenames are deduplicated automatically.
+        </p>
+      </section>
+
+      <!-- FILE CONTEXT -->
+      <section id="file-context">
+        <h2>File context &amp; permissions</h2>
+        <p>
+          FORGE gives agents awareness of your codebase through folder linking, per-node permissions,
+          and explicit file context configuration.
+        </p>
+
+        <h3>How context works</h3>
+        <ul>
+          <li>Link a local folder to a project — the file tree appears in the Projects sidebar.</li>
+          <li>Enable access on folders/files — agents can read (and optionally write) within enabled paths.</li>
+          <li>Add explicit context folders in Agent Settings for paths outside the main project tree.</li>
+          <li>Drag files from the tree into the composer to reference them in a message.</li>
+        </ul>
+
+        <h3>Agent permissions</h3>
+        <p>Each agent has six independent permission toggles:</p>
+        <table>
+          <thead><tr><th>Permission</th><th>What it allows</th></tr></thead>
+          <tbody>
+            <tr><td>Terminal</td><td>Open the terminal pane and run shell commands.</td></tr>
+            <tr><td>File write</td><td>Create, edit, and delete files in enabled paths.</td></tr>
+            <tr><td>Browser</td><td>Open and control the embedded browser pane.</td></tr>
+            <tr><td>File read</td><td>Read files and list directories in enabled project paths.</td></tr>
+            <tr><td>In-app settings</td><td>Edit project description, tools, and open models or agent panes.</td></tr>
+            <tr><td>Git commands</td><td>Use source control: status, commit, pull, push, and related operations.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Project memory</h3>
+        <p>
+          FORGE maintains an internal project memory system that tracks agent decisions, file changes,
+          tool results, and task notes. When queries reference history or prior context, relevant
+          memory records are retrieved and ranked by relevance, recency, and importance.
+        </p>
+      </section>
+
+      <!-- TERMINAL & BROWSER -->
+      <section id="terminal-browser">
+        <h2>Terminal &amp; browser</h2>
+        <p>
+          Integrated tool panels live in the workspace bottom or side area, toggled from the toolbar
+          or View menu.
+        </p>
+
+        <h3>Terminal</h3>
+        <ul>
+          <li>Full xterm.js terminal with fit-to-pane sizing.</li>
+          <li>Opens in the project directory (CWD follows the active project's linked folder).</li>
+          <li>Multiple terminal tabs supported — create via File → New Terminal or <kbd>Ctrl+`</kbd>.</li>
+          <li>Tabs can be split horizontally or vertically alongside browser tabs.</li>
+          <li>Drag tabs to rearrange or split the panel layout.</li>
+        </ul>
+
+        <h3>Embedded browser</h3>
+        <ul>
+          <li>Native embedded webview for browsing documentation, testing web apps, or viewing URLs agents reference.</li>
+          <li>Multiple browser tabs with independent sessions.</li>
+          <li>Toggle via View → Browser or the globe icon in the workspace toolbar.</li>
+          <li>Supports split layouts with terminal tabs in the same panel group.</li>
+        </ul>
+
+        <h3>Panel management</h3>
+        <ul>
+          <li>Show/hide the entire bottom panel from the toolbar.</li>
+          <li>Split panes support 2- or 3-way layouts with draggable dividers.</li>
+          <li>Panel sizes persist across sessions.</li>
+        </ul>
+      </section>
+
+      <!-- GIT -->
+      <section id="git">
+        <h2>Source control (Git)</h2>
+        <p>
+          The Source Control sidebar provides Git integration for linked project folders.
+        </p>
+
+        <h3>Repository setup</h3>
+        <ul>
+          <li><strong>Existing repo</strong> — link a folder that already contains a <code>.git</code> directory.</li>
+          <li><strong>Initialize</strong> — create a new Git repository in the project folder.</li>
+          <li><strong>Clone</strong> — clone a remote repository into the project directory (supports GitHub auth).</li>
+        </ul>
+
+        <h3>Working with changes</h3>
+        <ul>
+          <li>View staged and unstaged changes grouped in collapsible sections.</li>
+          <li>File status indicators: Modified (M), Added (A), Deleted (D), Renamed (R), Untracked (U), Conflicted (!).</li>
+          <li>Stage files individually or stage all when committing.</li>
+          <li>Write a commit message and commit with <kbd>Ctrl+Enter</kbd>.</li>
+          <li><strong>AI commit message</strong> — generate a commit message from staged changes using AI, or get a quick heuristic suggestion.</li>
+        </ul>
+
+        <h3>Sync &amp; branches</h3>
+        <ul>
+          <li>Branch selector to view and switch branches.</li>
+          <li>Pull, push, fetch, and sync (push when ahead with no local changes).</li>
+          <li>Ahead/behind indicators show sync status relative to remote.</li>
+          <li>Refresh button to re-scan repository state.</li>
+        </ul>
+
+        <h3>GitHub authentication</h3>
+        <p>
+          Sign in with GitHub from the account menu to enable authenticated clone, push, and pull
+          operations. Auth status appears in the status bar.
+        </p>
+      </section>
+
+      <!-- LAYOUTS -->
+      <section id="layouts">
+        <h2>Layouts &amp; appearance</h2>
+
+        <h3>Layout presets</h3>
+        <ul>
+          <li><strong>Vertical Default</strong> — chat panes stacked vertically with the tool panel below.</li>
+          <li><strong>Horizontal Default</strong> — chat panes arranged side-by-side with the tool panel beside them.</li>
+        </ul>
+        <p>
+          Switch layouts via the layout grid button in the workspace toolbar, View → Appearance,
+          or Settings → Appearance. Thumbnail previews show each layout arrangement.
+        </p>
+
+        <h3>Saved layouts</h3>
+        <p>
+          Save up to two custom layout snapshots that capture your current panel sizes, split
+          arrangement, and visibility state. Click an empty saved slot to capture; click a filled
+          slot to restore. Delete saved layouts with the × button.
+        </p>
+
+        <h3>Theme</h3>
+        <p>
+          Settings → Appearance → Theme: choose System, Dark, or Light. The app defaults to dark mode.
+        </p>
+
+        <h3>Resizable panels</h3>
+        <p>
+          Drag dividers between the sidebar, chat area, tool panel, and split panes. Sizes persist
+          in local storage. Collapse the left sidebar with <kbd>Ctrl+B</kbd>.
+        </p>
+      </section>
+
+      <!-- NAVIGATION -->
+      <section id="navigation">
+        <h2>Navigation &amp; menus</h2>
+
+        <h3>Application menu</h3>
+        <table>
+          <thead><tr><th>Menu</th><th>Key items</th></tr></thead>
+          <tbody>
+            <tr><td>File</td><td>New Agent, New Project, New Terminal, New Browser, Agent Settings, Exit</td></tr>
+            <tr><td>Edit</td><td>Undo, Redo, Cut, Copy, Paste, Find in Chat</td></tr>
+            <tr><td>View</td><td>Toggle Projects, Agent Cart, Terminal, Browser, Appearance, Left Sidebar, Full Screen</td></tr>
+            <tr><td>Go</td><td>Go to Agent, Go to Project, Find in Chat, Previous/Next Message</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Go to panels</h3>
+        <p>
+          Go → Go to Agent (<kbd>Ctrl+Shift+O</kbd>) or Go to Project opens a searchable quick-switcher
+          with recent items. Type to filter, arrow keys to navigate, Enter to select.
+        </p>
+
+        <h3>Settings search</h3>
+        <p>
+          The settings page includes a search bar that indexes all settings sections and individual
+          options. Results jump directly to the relevant panel.
+        </p>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings">
+        <h2>Settings</h2>
+        <p>Open via the gear icon in the activity bar. Settings are organized into sections:</p>
+
+        <h3>General</h3>
+        <ul>
+          <li><strong>Forge Account</strong> — link to manage account and billing on the web.</li>
+          <li><strong>System Notifications</strong> — OS notifications when an agent completes or needs attention (shown when app is backgrounded).</li>
+          <li><strong>Warning Notifications</strong> — in-app toast alerts for warnings.</li>
+          <li><strong>System Tray Icon</strong> — keep FORGE accessible from the Windows system tray.</li>
+          <li><strong>Completion Sound</strong> — audio cue when an agent finishes responding.</li>
+          <li><strong>Data Sharing</strong> — opt in or out of sharing prompts, edits, and usage data to improve FORGE.</li>
+          <li><strong>Log Out</strong> — end the current session.</li>
+        </ul>
+
+        <h3>Appearance</h3>
+        <ul>
+          <li>Theme selector (System / Dark / Light).</li>
+          <li>Layout picker with presets and saved layout slots.</li>
+        </ul>
+
+        <h3>Plan &amp; Usage</h3>
+        <ul>
+          <li>Free plan token usage bar with limit tracking.</li>
+          <li>Tokens sent (input), tokens received (output), and estimated cost across all models.</li>
+          <li>Per-model usage breakdown sorted by input tokens.</li>
+          <li>Reset usage statistics.</li>
+          <li>Link to pricing plans.</li>
+        </ul>
+        <p class="callout">
+          Usage is tracked locally from chat sessions. Cost estimates use public API pricing and
+          are approximate.
+        </p>
+
+        <h3>Models</h3>
+        <ul>
+          <li><strong>Default Model</strong> — the model FORGE prefers when auto mode selects a single model.</li>
+        </ul>
+
+        <h3>Agents</h3>
+        <p>Global view of all active agents grouped by project. Search, inspect summaries, and open individual agent settings.</p>
+
+        <h3>Automation</h3>
+        <p>See the <a href="#automations">Automations</a> section below.</p>
+
+        <h3>Workflows, Plugins, Rules</h3>
+        <p>
+          <span class="badge badge-soon">Coming soon</span>
+          These settings sections are reserved for future features: visual workflow tools,
+          plugin extensions, and persistent AI rules/guidelines.
+        </p>
+      </section>
+
+      <!-- AUTOMATIONS -->
+      <section id="automations">
+        <h2>Automations</h2>
+        <p>
+          Automations let you schedule agent tasks or trigger them reactively based on project events.
+          Configure in Settings → Automation.
+        </p>
+
+        <h3>Creating an automation</h3>
+        <ol>
+          <li>Click <strong>New</strong> to open the builder.</li>
+          <li>Give it a name (e.g. "Nightly dependency review").</li>
+          <li>Choose a trigger type and configure its parameters.</li>
+          <li>Write the agent task — instructions the agent receives when the automation fires.</li>
+          <li>Save. Toggle the switch on the list to enable or disable.</li>
+        </ol>
+
+        <h3>Trigger types</h3>
+
+        <h4>Time based (schedule)</h4>
+        <ul>
+          <li><strong>Every hour</strong> — runs at the top of each hour.</li>
+          <li><strong>Daily</strong> — runs once per day at a specified time (local timezone).</li>
+          <li><strong>Weekdays</strong> — runs Monday–Friday at a specified time.</li>
+          <li><strong>Weekly</strong> — runs on a chosen day of the week at a specified time.</li>
+          <li><strong>Custom interval</strong> — runs every N minutes (minimum 15).</li>
+        </ul>
+
+        <h4>Agent completion</h4>
+        <p>Runs after an agent finishes its current task. Scope options:</p>
+        <ul>
+          <li><strong>Any agent</strong> — triggers when any agent in any project completes.</li>
+          <li><strong>Specific agents</strong> — pick individual agents to watch.</li>
+          <li><strong>Specific projects</strong> — triggers when any agent in selected projects completes.</li>
+        </ul>
+
+        <h4>Event based</h4>
+        <ul>
+          <li><strong>Git commit</strong> — after a new commit is detected. Optional branch filter (e.g. <code>main</code>, <code>release/*</code>).</li>
+          <li><strong>File changed</strong> — when a file matching a glob pattern changes (e.g. <code>src/**/*.ts</code>).</li>
+          <li><strong>Branch pushed</strong> — when a branch is pushed to remote. Optional branch filter.</li>
+          <li><strong>Pull request opened</strong> — when a new PR is created. Optional target branch filter.</li>
+        </ul>
+
+        <h3>Agent task</h3>
+        <p>
+          The task field contains the prompt/instructions sent to an agent when the automation triggers.
+          Be specific about what to review, summarize, or act on. The agent runs in the context of
+          its configured project.
+        </p>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section id="notifications">
+        <h2>Notifications</h2>
+        <ul>
+          <li>
+            <strong>System notifications</strong> — when enabled, FORGE sends native OS notifications
+            if an agent completes or needs attention while the app is minimized or unfocused. Includes
+            workspace and agent name in the notification.
+          </li>
+          <li>
+            <strong>Completion sound</strong> — optional audio feedback when an agent finishes responding,
+            even when the app is focused.
+          </li>
+          <li>
+            <strong>Warning toasts</strong> — in-app toast messages for warnings (configurable).
+          </li>
+          <li>
+            <strong>System tray</strong> — optional tray icon for background presence on Windows.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ACCOUNT -->
+      <section id="account">
+        <h2>Account &amp; authentication</h2>
+
+        <h3>Sign in</h3>
+        <p>
+          Authenticate via GitHub or Google from the account menu (bottom of the activity bar).
+          Sign-in enables XP progression, GitHub Git operations, and account-linked features.
+        </p>
+
+        <h3>XP &amp; levels</h3>
+        <p>
+          Creating new agents awards XP. Progress is tracked per account with a level bar shown
+          in the account menu. Levels cap at a maximum tier with color-coded progress indicators.
+        </p>
+
+        <h3>GitHub integration</h3>
+        <p>
+          GitHub auth (separate from sign-in) enables authenticated remote Git operations — clone
+          private repos, push, and pull. Status shown in the status bar and account menu.
+        </p>
+
+        <h3>Google sign-in</h3>
+        <p>
+          Google OAuth is supported as an alternative sign-in provider. The OAuth callback is
+          handled by a dedicated route in the app.
+        </p>
+      </section>
+
+      <!-- KEYBOARD SHORTCUTS -->
+      <section id="keyboard-shortcuts">
+        <h2>Keyboard shortcuts</h2>
+        <table>
+          <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Ctrl+N</kbd></td><td>New Agent</td></tr>
+            <tr><td><kbd>Ctrl+Z</kbd></td><td>Undo</td></tr>
+            <tr><td><kbd>Ctrl+Shift+Z</kbd></td><td>Redo</td></tr>
+            <tr><td><kbd>Ctrl+X</kbd></td><td>Cut (in composer)</td></tr>
+            <tr><td><kbd>Ctrl+C</kbd></td><td>Copy</td></tr>
+            <tr><td><kbd>Ctrl+V</kbd></td><td>Paste (in composer)</td></tr>
+            <tr><td><kbd>Ctrl+F</kbd></td><td>Find in Chat</td></tr>
+            <tr><td><kbd>Ctrl+B</kbd></td><td>Toggle Left Sidebar</td></tr>
+            <tr><td><kbd>Ctrl+`</kbd></td><td>Toggle Terminal</td></tr>
+            <tr><td><kbd>Ctrl+Shift+E</kbd></td><td>Toggle Projects sidebar</td></tr>
+            <tr><td><kbd>Ctrl+Shift+A</kbd></td><td>Toggle Agent Cart sidebar</td></tr>
+            <tr><td><kbd>Ctrl+Shift+O</kbd></td><td>Go to Agent</td></tr>
+            <tr><td><kbd>Ctrl+↑</kbd></td><td>Previous message</td></tr>
+            <tr><td><kbd>Ctrl+↓</kbd></td><td>Next message</td></tr>
+            <tr><td><kbd>Ctrl+Enter</kbd></td><td>Commit (in Git panel)</td></tr>
+            <tr><td><kbd>Ctrl+1</kbd>–<kbd>3</kbd></td><td>Activate cart model slot 1–3</td></tr>
+            <tr><td><kbd>Ctrl+4</kbd></td><td>Activate all cart models</td></tr>
+            <tr><td><kbd>/</kbd></td><td>Slash commands (in composer)</td></tr>
+            <tr><td><kbd>@</kbd></td><td>Mention models (in composer)</td></tr>
+            <tr><td><kbd>F11</kbd></td><td>Full screen</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SUPPORTED MODELS -->
+      <section id="supported-models">
+        <h2>Supported AI models</h2>
+        <p>Models available in the Model Cart, grouped by provider:</p>
+
+        <h3>ChatGPT (OpenAI)</h3>
+        <ul>
+          <li>GPT-4o — Code generation, general purpose</li>
+          <li>GPT-4 Turbo — General purpose</li>
+          <li>o1 — Deep reasoning</li>
+        </ul>
+
+        <h3>Claude (Anthropic)</h3>
+        <ul>
+          <li>Claude 3.5 Sonnet — Reasoning &amp; analysis</li>
+          <li>Claude 3 Opus — Complex analysis</li>
+        </ul>
+
+        <h3>Gemini (Google)</h3>
+        <ul>
+          <li>Gemini 2.5 Pro — Research &amp; context</li>
+          <li>Gemini 2.5 Flash — Fast responses</li>
+          <li>Gemini 2.0 Flash — Fast responses</li>
+          <li>Gemini 2.5 Pro (Direct) — Deep reasoning</li>
+          <li>Gemini 3.5 Flash — Cutting edge</li>
+          <li>Gemini 3.1 Flash Lite — Ultra-fast responses</li>
+          <li>Gemini 3.0 Flash / Pro (Preview) — Next-gen models</li>
+          <li>Gemini 3.1 Pro (Preview) — Cutting edge pro</li>
+        </ul>
+
+        <h3>DeepSeek</h3>
+        <ul>
+          <li>DeepSeek Coder — Specialized coding tasks</li>
+        </ul>
+
+        <h3>Grok (xAI)</h3>
+        <ul>
+          <li>Grok 4.3 — General</li>
+          <li>Grok 4.20 Fast — Low latency</li>
+          <li>Grok 4.20 Reasoning — Deep reasoning</li>
+          <li>Grok 4.20 Multi-Agent — Multi-agent orchestration</li>
+          <li>Grok Code — Coding</li>
+        </ul>
+
+        <p class="callout callout-warn">
+          Model availability depends on which providers are configured on the managed backend.
+          Not all models may be available in every deployment.
+        </p>
+      </section>
+
+      <!-- COMING SOON -->
+      <section id="coming-soon">
+        <h2>Coming soon</h2>
+        <p>Features referenced in the codebase or roadmap but not yet fully implemented:</p>
+        <ul>
+          <li><strong>Workflows</strong> — visual workflow tools for multi-agent collaboration.</li>
+          <li><strong>Plugins</strong> — extension system for third-party integrations.</li>
+          <li><strong>Rules</strong> — persistent AI rules and guidelines (similar to Cursor rules).</li>
+          <li><strong>Better file indexing</strong> — codebase-wide search and indexing.</li>
+          <li><strong>Advanced agent orchestration</strong> — deeper multi-agent coordination beyond Round Table.</li>
+        </ul>
+      </section>
+
+      <footer>
+        <p>
+          FORGE — Desktop AI Engineering IDE ·
+          <a href="https://pe-web-ebon.vercel.app/" target="_blank" rel="noopener">Download</a>
+        </p>
+        <p>This document is a standalone reference generated from the product codebase. It is not embedded in the application.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
