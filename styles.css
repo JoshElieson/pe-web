@@ -3135,6 +3135,61 @@ button {
   border-color: #27272a;
 }
 
+.download-card__alt {
+  width: 100%;
+  margin-top: -0.25rem;
+  font-size: 0.8125rem;
+  color: #71717a;
+}
+
+.download-card__alt p {
+  margin: 0 0 0.35rem;
+}
+
+.download-card__msi {
+  color: #18181b;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.download-card__msi:hover {
+  color: #000000;
+}
+
+.download-help {
+  margin-top: clamp(2.5rem, 6vh, 3.5rem);
+  padding: 1.5rem 1.25rem;
+  background: #fafafa;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.75rem;
+}
+
+.download-help h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #09090b;
+}
+
+.download-help p {
+  margin: 0 0 0.75rem;
+  color: #52525b;
+  line-height: 1.6;
+}
+
+.download-help ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #52525b;
+  line-height: 1.65;
+}
+
+.download-help li + li {
+  margin-top: 0.35rem;
+}
+
 .download-card__soon {
   display: inline-flex;
   align-items: center;
