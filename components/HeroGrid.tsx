@@ -277,7 +277,7 @@ export function HeroGrid() {
             side-by-side, and ship prompts with confidence
           </p>
           <a className="hero-blank-card__cta" href="download.html">
-            Book a demo
+            Get Access
           </a>
         </div>
 
