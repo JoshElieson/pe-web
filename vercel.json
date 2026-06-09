@@ -1,6 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/downloads/:path*",
+      "destination": "https://raw.githubusercontent.com/JoshElieson/pe-web/main/public/downloads/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/downloads/(.*\\.(exe|msi))",
