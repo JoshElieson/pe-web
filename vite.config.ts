@@ -16,6 +16,7 @@ export default defineConfig({
         main: resolve(__dirname, "index.html"),
         download: resolve(__dirname, "download.html"),
         pricing: resolve(__dirname, "pricing.html"),
+        documentation: resolve(__dirname, "forge-documentation.html"),
       },
     },
   },
