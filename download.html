@@ -7,26 +7,22 @@
   <title>Download | FORGE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
 </head>
-<body>
-  <header class="site-header" id="top">
-    <div class="header-inner">
-      <a href="index.html" class="logo" aria-label="FORGE home">
-        <img src="assets/forge-logo.png" alt="FORGE" class="logo-img" width="1024" height="343" />
+<body class="page-download">
+  <header class="home-header" id="top">
+    <div class="home-header__inner">
+      <a href="index.html" class="home-header__logo" aria-label="FORGE home">
+        <img src="assets/forge-logo.png" alt="FORGE" width="1024" height="343" />
       </a>
-      <nav class="header-nav" aria-label="Site actions">
-        <a href="index.html#features" class="header-link">Learn more</a>
-        <a href="pricing.html" class="header-link">Pricing</a>
-        <a href="download.html" class="header-download" aria-current="page">
-          <span class="header-download__btn">
-            <span class="header-download__fill" aria-hidden="true"></span>
-            <span class="header-download__label" data-text="Download">Download</span>
-          </span>
-        </a>
+      <nav class="home-header__nav" aria-label="Site navigation">
+        <a href="index.html#plugins-showcase-root">Resources</a>
+        <a href="forge-documentation.html" target="_blank" rel="noopener noreferrer">Documentation</a>
+        <a href="pricing.html">Pricing</a>
       </nav>
+      <span class="home-header__cta home-header__cta--current" aria-current="page">Download</span>
     </div>
   </header>
 
@@ -40,8 +36,8 @@
           <li>
             <article class="download-card">
               <h2 class="download-card__title">Windows</h2>
-              <p class="download-card__meta">Windows 10 &amp; 11 &middot; x64 &middot; v1.0.0-2</p>
-              <a href="downloads/FORGE_1.0.0-2_x64-setup.exe" class="download-card__btn" download>Download for Windows</a>
+              <p class="download-card__meta">Windows 10 &amp; 11 &middot; x64 &middot; v1.1.0</p>
+              <a href="downloads/FORGE_1.1.0_x64-setup.exe" class="download-card__btn" download>Download for Windows</a>
             </article>
           </li>
 
@@ -62,9 +58,19 @@
           </li>
         </ul>
 
-        <section class="download-releases" aria-labelledby="previous-releases-heading">
-          <h2 id="previous-releases-heading" class="download-releases__heading">Previous releases</h2>
+        <details class="download-releases">
+          <summary class="download-releases__toggle">View previous releases</summary>
           <ul class="download-releases__list">
+            <li class="download-releases__item">
+              <div class="download-releases__info">
+                <span class="download-releases__version">v1.0.0-2</span>
+                <span class="download-releases__meta">Windows 10 &amp; 11 &middot; x64</span>
+              </div>
+              <div class="download-releases__links">
+                <a href="downloads/previous-releases/1.0.0-2/FORGE_1.0.0-2_x64-setup.exe" download>Setup (.exe)</a>
+                <a href="downloads/previous-releases/1.0.0-2/FORGE_1.0.0-2_x64_en-US.msi" download>MSI</a>
+              </div>
+            </li>
             <li class="download-releases__item">
               <div class="download-releases__info">
                 <span class="download-releases__version">v1.0.0-1</span>
@@ -76,11 +82,35 @@
               </div>
             </li>
           </ul>
-        </section>
+        </details>
 
         <a href="index.html" class="download-back">Back to home</a>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <p class="site-footer__copyright">&copy; 2026 FORGE. All rights reserved.</p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Footer">
+        <div class="site-footer__col">
+          <h2 class="site-footer__heading">Contact me</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://www.linkedin.com/in/josh-elieson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="mailto:josh@elieson.com">Email</a></li>
+          </ul>
+        </div>
+        <div class="site-footer__col">
+          <h2 class="site-footer__heading">More</h2>
+          <ul class="site-footer__links">
+            <li><a href="forge-documentation.html" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>

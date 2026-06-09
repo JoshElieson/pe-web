@@ -37,6 +37,16 @@
       background: var(--bg);
     }
 
+    ::selection {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    ::-moz-selection {
+      background: #000000;
+      color: #ffffff;
+    }
+
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -349,7 +359,7 @@
           A desktop AI engineering IDE for multi-model conversations, project-aware agents,
           and agent-style workflows in one focused workspace.
         </p>
-        <p class="meta">Version 1.0.0 · Desktop app (Tauri) · React + Rust</p>
+        <p class="meta">Version 1.1.0 · Desktop app (Tauri) · React + Rust</p>
       </header>
 
       <!-- OVERVIEW -->
