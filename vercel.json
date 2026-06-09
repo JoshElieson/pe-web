@@ -3,8 +3,8 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/downloads/:path*",
-      "destination": "https://raw.githubusercontent.com/JoshElieson/pe-web/main/public/downloads/:path*"
+      "source": "/downloads/(.*)",
+      "destination": "https://raw.githubusercontent.com/JoshElieson/pe-web/main/public/downloads/$1"
     }
   ],
   "headers": [
