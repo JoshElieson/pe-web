@@ -1,0 +1,279 @@
+/* =====================================================================
+   Mobile-only refinements (premium finish for small screens)
+   ---------------------------------------------------------------------
+   Loaded AFTER styles.css. Every rule here is scoped to small viewports
+   (max-width: 767px / 520px / 380px) so the desktop layout is untouched.
+   Goal: fix the hero card overflow on phones and tighten spacing, type,
+   and touch targets so the site reads as finished on mobile web.
+   ===================================================================== */
+
+@media (max-width: 767px) {
+  /* ---------------------------------------------------------------
+     HERO — reflow the grid + title card.
+     On desktop the title card is absolutely positioned and sized in
+     grid-square units. On a phone those squares collapse to ~11px, so
+     the headline/subtitle/CTA overflow the tiny card and look broken.
+     Here we turn the decorative grid into a slim banner and let the
+     card flow as a normal full-width block beneath it with readable
+     type. Inline styles set by HeroGrid.tsx are overridden with
+     !important since they are required to win the cascade.
+     --------------------------------------------------------------- */
+  .hero-blank {
+    padding-top: 4.5rem;
+  }
+
+  .hero-blank-grid-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Decorative grid + animated overlay become a short banner strip. */
+  .hero-blank-grid,
+  .hero-blank-grid-overlay {
+    height: 150px !important;
+    opacity: 0.9;
+  }
+
+  /* The card layer is the absolute overlay container; let it sit in flow
+     so the real content card below can take over. */
+  .hero-blank-card-layer {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    pointer-events: auto;
+  }
+
+  /* The headline card: drop absolute positioning, notch clip, and the
+     grid-derived width/height. Flow it full-width with comfortable
+     padding so the text never overflows. */
+  .hero-blank-card {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    clip-path: none !important;
+    padding: 2rem 1.5rem 0.5rem !important;
+    align-items: flex-start;
+  }
+
+  .hero-blank-card__title {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+    line-height: 1.12;
+  }
+
+  .hero-blank-card__subtitle {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    max-width: 34rem;
+  }
+
+  /* Full-width, larger tap target with a subtle premium shadow. */
+  .hero-blank-card__cta {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.95rem 1.6rem;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-shadow: 0 8px 24px -10px rgba(10, 10, 10, 0.6);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ---------------------------------------------------------------
+     MODEL LOGOS MARQUEE — tighten so it reads as a polished strip.
+     --------------------------------------------------------------- */
+  .hero-logos {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .hero-logos__label {
+    margin-bottom: 1.125rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero-logos__track {
+    gap: 2.25rem;
+  }
+
+  .hero-logos__track img {
+    height: 1.25rem;
+  }
+
+  .hero-logos__track img.hero-logos__mark {
+    height: 1.4rem;
+  }
+
+  /* ---------------------------------------------------------------
+     PLUGINS SHOWCASE — tighter rhythm, larger preview presence.
+     --------------------------------------------------------------- */
+  .plugins-section__showcase-inner {
+    gap: 2rem;
+    padding: clamp(2.5rem, 8vw, 3.25rem) 1.25rem;
+  }
+
+  .plugins-section__headline {
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.6rem, 7vw, 2rem);
+  }
+
+  .plugins-section__feature {
+    padding: 0.875rem 0;
+    gap: 0.875rem;
+  }
+
+  .plugins-preview {
+    min-height: 0;
+  }
+
+  /* ---------------------------------------------------------------
+     GOVERN SECTION — comfortable padding + readable stacked tabs.
+     --------------------------------------------------------------- */
+  .govern-section__inner {
+    padding: clamp(3rem, 9vw, 4rem) 1.25rem;
+  }
+
+  .govern-section__title {
+    font-size: clamp(1.65rem, 7.5vw, 2.1rem);
+  }
+
+  .govern-section__tab {
+    padding: 1rem 1.125rem;
+  }
+
+  .govern-section__panel {
+    gap: 2rem;
+  }
+
+  .govern-section__dashboard-wrap {
+    min-height: 0;
+  }
+
+  .govern-section__dashboard {
+    padding: 1rem;
+  }
+
+  /* Stats can crowd at narrow widths; give them room to breathe. */
+  .govern-section__stats {
+    gap: 0.5rem;
+  }
+
+  .govern-section__stat {
+    padding: 0.625rem;
+  }
+
+  .govern-section__stat-value {
+    font-size: 1.05rem;
+  }
+
+  /* ---------------------------------------------------------------
+     INDUSTRY SECTION (dark) — tighter padding, scrollable tab row,
+     and a smaller panel so the numbered list reads cleanly.
+     --------------------------------------------------------------- */
+  .industry-section__inner {
+    padding: clamp(3.5rem, 11vw, 4.5rem) 1.25rem;
+  }
+
+  .industry-section__header {
+    margin-bottom: 2.5rem;
+  }
+
+  .industry-section__title {
+    font-size: clamp(1.9rem, 9vw, 2.5rem);
+  }
+
+  .industry-section__lead {
+    font-size: 1rem;
+  }
+
+  .industry-section__body {
+    gap: 1.75rem;
+  }
+
+  /* Horizontal, swipeable tab row that doesn't wrap into a tall stack. */
+  .industry-section__tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .industry-section__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .industry-section__tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .industry-section__panel {
+    padding: 1.5rem 1.375rem;
+  }
+
+  .industry-section__panel-title {
+    font-size: clamp(1.4rem, 6.5vw, 1.85rem);
+  }
+
+  .industry-section__panel-subtitle {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .industry-section__items {
+    gap: 1.125rem;
+  }
+
+  .industry-section__item {
+    gap: 1rem;
+  }
+
+  .industry-section__item-num {
+    width: 1.85rem;
+    height: 1.85rem;
+    font-size: 0.75rem;
+  }
+
+  .industry-section__item-text {
+    font-size: 0.975rem;
+  }
+
+  /* ---------------------------------------------------------------
+     SCROLL-EXPAND VIDEO — give the rounded video edge-safe margins.
+     --------------------------------------------------------------- */
+  .forge-showcase__video-wrapper {
+    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ---------------------------------------------------------------
+     FOOTER — a touch more breathing room at the very bottom.
+     --------------------------------------------------------------- */
+  .site-footer__inner {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* Extra-small phones: trim the headline + grid banner further. */
+@media (max-width: 380px) {
+  .hero-blank-grid,
+  .hero-blank-grid-overlay {
+    height: 120px !important;
+  }
+
+  .hero-blank-card {
+    padding: 1.5rem 1.25rem 0.25rem !important;
+  }
+
+  .hero-blank-card__title {
+    font-size: clamp(1.7rem, 8.5vw, 2.1rem);
+  }
+
+  .hero-blank-card__subtitle {
+    font-size: 0.95rem;
+  }
+}
