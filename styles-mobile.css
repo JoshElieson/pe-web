@@ -243,10 +243,56 @@
   }
 
   /* ---------------------------------------------------------------
-     SCROLL-EXPAND VIDEO — give the rounded video edge-safe margins.
+     SCROLL-EXPAND VIDEO ("The AI Workspace") — tighten the layout
+     for mobile so nothing overflows. On desktop this section has a
+     scroll-driven width expansion; on phones we disable that effect
+     and show a clean, fixed-size video card with comfortable margins.
      --------------------------------------------------------------- */
+  .forge-showcase {
+    /* Collapse the scroll-track height; show static layout. */
+    height: auto !important;
+    overflow: hidden;
+    padding: clamp(2.5rem, 8vw, 4rem) 0 clamp(3rem, 9vw, 4.5rem);
+  }
+
+  .forge-showcase__sticky {
+    /* Drop sticky positioning; let it flow normally. */
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0;
+  }
+
+  .forge-showcase__inner {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
   .forge-showcase__video-wrapper {
-    box-shadow: 0 18px 50px -20px rgba(0, 0, 0, 0.5);
+    /* Override the inline width/transform from the component's scroll logic;
+       force a comfortable fixed width with smaller border radius. */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+    transform: none !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.28);
+  }
+
+  .forge-showcase__media {
+    width: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .forge-showcase__media video {
+    /* Ensure the video itself fills the wrapper and respects the new smaller radius. */
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    border-radius: inherit;
+    object-fit: cover;
   }
 
   /* ---------------------------------------------------------------
@@ -259,6 +305,20 @@
 }
 
 /* Extra-small phones: trim the headline + grid banner further. */
+@media (max-width: 520px) {
+  .forge-showcase {
+    padding: 2.25rem 0 3rem;
+  }
+
+  .forge-showcase__inner {
+    padding: 0 0.75rem;
+  }
+
+  .forge-showcase__video-wrapper {
+    border-radius: 0.875rem !important;
+  }
+}
+
 @media (max-width: 380px) {
   .hero-blank-grid,
   .hero-blank-grid-overlay {
@@ -275,5 +335,13 @@
 
   .hero-blank-card__subtitle {
     font-size: 0.95rem;
+  }
+
+  .forge-showcase__inner {
+    padding: 0 0.625rem;
+  }
+
+  .forge-showcase__video-wrapper {
+    border-radius: 0.75rem !important;
   }
 }
