@@ -265,14 +265,17 @@
 
   .forge-showcase__inner {
     width: 100%;
-    padding: 0 1rem;
+    max-width: 100%;
+    padding: 0 0.75rem;
+    overflow: hidden;
   }
 
   .forge-showcase__video-wrapper {
     /* Override the inline width/transform from the component's scroll logic;
        force a comfortable fixed width with smaller border radius. */
-    width: 100% !important;
-    max-width: 100% !important;
+    width: min(100%, calc(100vw - 1.5rem)) !important;
+    max-width: calc(100vw - 1.5rem) !important;
+    min-width: 0;
     margin: 0 auto;
     transform: none !important;
     border-radius: 1rem !important;
@@ -281,6 +284,7 @@
 
   .forge-showcase__media {
     width: 100%;
+    max-width: 100%;
     overflow: hidden;
     border-radius: inherit;
   }
@@ -311,10 +315,12 @@
   }
 
   .forge-showcase__inner {
-    padding: 0 0.75rem;
+    padding: 0 0.625rem;
   }
 
   .forge-showcase__video-wrapper {
+    width: min(100%, calc(100vw - 1.25rem)) !important;
+    max-width: calc(100vw - 1.25rem) !important;
     border-radius: 0.875rem !important;
   }
 }
@@ -338,10 +344,12 @@
   }
 
   .forge-showcase__inner {
-    padding: 0 0.625rem;
+    padding: 0 0.5rem;
   }
 
   .forge-showcase__video-wrapper {
+    width: min(100%, calc(100vw - 1rem)) !important;
+    max-width: calc(100vw - 1rem) !important;
     border-radius: 0.75rem !important;
   }
 }

@@ -6,6 +6,8 @@ const DEMO_VIDEO_SRC = "assets/promo/forge-demo-hq.webm";
 /** Resting width when the section first pins; expands slightly on scroll. */
 const START_WIDTH_PX = 1400;
 const END_WIDTH_PX = 1700;
+const MOBILE_BREAKPOINT_PX = 767;
+const MOBILE_HORIZONTAL_GUTTER_PX = 24;
 const START_Y = 24;
 const END_RADIUS = 36;
 
@@ -22,16 +24,23 @@ export function ScrollExpandMediaSection() {
     typeof window !== "undefined" ? window.innerWidth : 0,
   );
 
-  const startWidthPx = Math.min(START_WIDTH_PX, viewportWidth - 48);
-  const endWidthPx = Math.max(startWidthPx, Math.min(END_WIDTH_PX, viewportWidth - 48));
-  const targetWidthPx = lerp(startWidthPx, endWidthPx, rawProgress);
-  const translateY = lerp(START_Y, 0, rawProgress);
+  const isMobile = viewportWidth > 0 && viewportWidth <= MOBILE_BREAKPOINT_PX;
+  const mobileMaxWidthPx = Math.max(viewportWidth - MOBILE_HORIZONTAL_GUTTER_PX, 0);
+  const startWidthPx = isMobile
+    ? mobileMaxWidthPx
+    : Math.min(START_WIDTH_PX, viewportWidth - 48);
+  const endWidthPx = isMobile
+    ? mobileMaxWidthPx
+    : Math.max(startWidthPx, Math.min(END_WIDTH_PX, viewportWidth - 48));
+  const targetWidthPx = isMobile ? mobileMaxWidthPx : lerp(startWidthPx, endWidthPx, rawProgress);
+  const translateY = isMobile ? 0 : lerp(START_Y, 0, rawProgress);
+  const borderRadius = isMobile ? 16 : END_RADIUS;
 
   const videoStyle = {
     width: `${targetWidthPx}px`,
-    maxWidth: `${END_WIDTH_PX}px`,
-    transform: `translateY(${translateY}px)`,
-    borderRadius: `${END_RADIUS}px`,
+    maxWidth: isMobile ? "100%" : `${END_WIDTH_PX}px`,
+    transform: isMobile ? "none" : `translateY(${translateY}px)`,
+    borderRadius: `${borderRadius}px`,
   } as const;
 
   useLayoutEffect(() => {
