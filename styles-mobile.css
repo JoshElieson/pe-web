@@ -191,6 +191,22 @@
 
   .industry-section__body {
     gap: 1.75rem;
+    min-width: 0;
+  }
+
+  /* Keep the swipeable tab row from expanding the grid track (which
+     otherwise blows out the gradient panel rectangle off-screen). */
+  .industry-section__nav,
+  .industry-section__tabs-track {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .industry-section__panel-wrap {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   /* Horizontal, swipeable tab row that doesn't wrap into a tall stack. */
