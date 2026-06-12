@@ -2,17 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 const ROWS = 9;
-const COLS = 31;
+const MIN_COLS = 14;
+const MAX_COLS = 31;
+// Target CSS px per (cell + gap). The column count adapts to the viewport so
+// the squares stay roughly this size on any monitor, which in turn keeps the
+// title card and floating cards at a consistent physical size.
+const TARGET_STEP = 62;
 const GAP = 1;
 const LINE_COLOR = "#ffffff";
 
-// Title card placement, measured in grid squares. The card's top-left corner
-// begins at the 3rd square across and the 2nd square down (0-indexed col 2,
-// row 1) and spans a block of squares, snapping its edges to the grid lines.
-const CARD_START_COL = 3;
+// Title card placement, measured in grid squares. The card's top row is fixed;
+// its column start/span are computed per-viewport in computeCardPlacement so
+// the card keeps a readable size and the floating cards always fit beside it.
 const CARD_START_ROW = 1;
-const CARD_COLS = 12;
 const CARD_ROWS = 6;
+
+// Floating feature-card cluster. Sized in em (see styles.css) so the whole
+// cluster can be scaled by setting font-size; natural dimensions are its
+// bounding box at 1em = 16px.
+const CLUSTER_MIN_VIEWPORT = 1100;
+const CLUSTER_NATURAL_W_EM = 34.5;
+const CLUSTER_NATURAL_H_EM = 26.5;
+const CLUSTER_BASE_FONT = 16;
 
 // Stepped notch carved out of the card's bottom-right corner (in card-local
 // grid cells) so the card reads as an L / staircase instead of a plain
@@ -88,6 +99,7 @@ const HERO_GRID_GRADIENT = [
 ].join(", ");
 
 type GridLayout = {
+  cols: number;
   cellSize: number;
   gap: number;
   patternSize: number;
@@ -109,17 +121,38 @@ type GridLayout = {
  * render at a uniform width.
  */
 function computeLayout(containerWidth: number, dpr: number): GridLayout {
+  const cols = Math.min(
+    MAX_COLS,
+    Math.max(MIN_COLS, Math.round(containerWidth / TARGET_STEP))
+  );
+
   const deviceWidth = containerWidth * dpr;
   const gapDevice = Math.max(1, Math.round(GAP * dpr));
-  const cellDevice = Math.floor((deviceWidth - (COLS - 1) * gapDevice) / COLS);
+  const cellDevice = Math.floor((deviceWidth - (cols - 1) * gapDevice) / cols);
 
   const cellSize = cellDevice / dpr;
   const gap = gapDevice / dpr;
   const patternSize = (cellDevice + gapDevice) / dpr;
-  const gridWidth = (cellDevice * COLS + gapDevice * (COLS - 1)) / dpr;
+  const gridWidth = (cellDevice * cols + gapDevice * (cols - 1)) / dpr;
   const gridHeight = (cellDevice * ROWS + gapDevice * (ROWS - 1)) / dpr;
 
-  return { cellSize, gap, patternSize, gridWidth, gridHeight };
+  return { cols, cellSize, gap, patternSize, gridWidth, gridHeight };
+}
+
+/**
+ * Choose where the title card sits and how many columns it spans. With the
+ * floating cards visible the card hugs the left side and leaves the right
+ * portion of the grid free; without them it widens slightly and centers.
+ */
+function computeCardPlacement(cols: number, showCluster: boolean) {
+  if (showCluster) {
+    const cardCols = Math.min(12, Math.floor(cols * 0.55));
+    const cardStartCol = cols >= 26 ? 3 : 2;
+    return { cardCols, cardStartCol };
+  }
+  const cardCols = Math.min(12, cols - 4);
+  const cardStartCol = Math.floor((cols - cardCols) / 2);
+  return { cardCols, cardStartCol };
 }
 
 function buildGridLinePattern({ cellSize, gap, patternSize }: GridLayout) {
@@ -173,20 +206,39 @@ export function HeroGrid() {
     return <div ref={wrapRef} className="hero-blank-grid-wrap" />;
   }
 
-  const { cellSize, gap, patternSize, gridWidth, gridHeight } = layout;
+  const { cols, cellSize, gap, patternSize, gridWidth, gridHeight } = layout;
+
+  const showCluster = gridWidth >= CLUSTER_MIN_VIEWPORT;
+  const { cardCols, cardStartCol } = computeCardPlacement(cols, showCluster);
 
   // Title card geometry. The clip-path traces the card outline clockwise from
   // the top-left, stepping in at the bottom-right to carve the staircase notch.
   // Interior cut lines land on grid lines (multiples of `step`); the far right
   // and bottom edges use the exact card size (which omits the trailing gap).
   const step = cellSize + gap;
-  const cardW = CARD_COLS * cellSize + (CARD_COLS - 1) * gap;
+  const cardW = cardCols * cellSize + (cardCols - 1) * gap;
   const cardH = CARD_ROWS * cellSize + (CARD_ROWS - 1) * gap;
-  const notchUpperX = (CARD_COLS - NOTCH_UPPER_COLS) * step;
-  const notchBottomX = (CARD_COLS - NOTCH_BOTTOM_COLS) * step;
+  const notchUpperX = (cardCols - NOTCH_UPPER_COLS) * step;
+  const notchBottomX = (cardCols - NOTCH_BOTTOM_COLS) * step;
   const notchUpperY = (CARD_ROWS - 2) * step;
   const notchMidY = (CARD_ROWS - 1) * step;
   const cardClip = `polygon(0px 0px, ${cardW}px 0px, ${cardW}px ${notchUpperY}px, ${notchUpperX}px ${notchUpperY}px, ${notchUpperX}px ${notchMidY}px, ${notchBottomX}px ${notchMidY}px, ${notchBottomX}px ${cardH}px, 0px ${cardH}px)`;
+
+  // Floating cluster geometry. The cluster lives in the free zone to the right
+  // of the title card; it scales down (via font-size, everything inside is in
+  // em) when the zone is narrower than its natural size, so the cards always
+  // stay fully on screen.
+  const zoneStart = cardStartCol * step + cardW + step / 2;
+  const zoneWidth = gridWidth - zoneStart - step / 2;
+  const clusterScale = Math.min(
+    1,
+    zoneWidth / (CLUSTER_NATURAL_W_EM * CLUSTER_BASE_FONT)
+  );
+  const clusterFont = CLUSTER_BASE_FONT * clusterScale;
+  const clusterW = CLUSTER_NATURAL_W_EM * clusterFont;
+  const clusterH = CLUSTER_NATURAL_H_EM * clusterFont;
+  const clusterLeft = zoneStart + Math.min((zoneWidth - clusterW) / 2, 192);
+  const clusterTop = Math.max(step / 2, (gridHeight - clusterH) / 2);
 
   return (
     <div ref={wrapRef} className="hero-blank-grid-wrap">
@@ -219,7 +271,7 @@ export function HeroGrid() {
           {
             width: gridWidth,
             height: gridHeight,
-            gridTemplateColumns: `repeat(${COLS}, ${cellSize}px)`,
+            gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
             gridTemplateRows: `repeat(${ROWS}, ${cellSize}px)`,
             gap: `${gap}px`,
             "--hero-grad": HERO_GRID_GRADIENT,
@@ -229,9 +281,9 @@ export function HeroGrid() {
         }
         aria-hidden="true"
       >
-        {Array.from({ length: ROWS * COLS }, (_, index) => {
-          const row = Math.floor(index / COLS);
-          const col = index % COLS;
+        {Array.from({ length: ROWS * cols }, (_, index) => {
+          const row = Math.floor(index / cols);
+          const col = index % cols;
           return (
             <div
               key={index}
@@ -260,7 +312,7 @@ export function HeroGrid() {
         <div
           className="hero-blank-card"
           style={{
-            left: CARD_START_COL * step,
+            left: cardStartCol * step,
             top: CARD_START_ROW * step,
             width: cardW,
             height: cardH,
@@ -282,8 +334,22 @@ export function HeroGrid() {
         </div>
 
         {/* Floating feature cards. Purely decorative cluster that sits on top of
-            the grid on the right; staggered diagonally with gaps between cards. */}
-        <div className="hero-feature-cluster" aria-hidden="true">
+            the grid on the right; staggered diagonally with gaps between cards.
+            Position and scale are computed from the grid so the cluster always
+            fits beside the title card; on narrow viewports it is omitted and
+            the title card centers instead. */}
+        {showCluster && (
+        <div
+          className="hero-feature-cluster"
+          style={{
+            left: clusterLeft,
+            top: clusterTop,
+            width: clusterW,
+            height: clusterH,
+            fontSize: `${clusterFont}px`,
+          }}
+          aria-hidden="true"
+        >
           {FEATURE_CARDS.map((card) => (
             <div
               key={card.key}
@@ -304,6 +370,7 @@ export function HeroGrid() {
             </div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );
